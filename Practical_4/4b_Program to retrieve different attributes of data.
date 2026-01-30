@@ -1,0 +1,31 @@
+import os
+import pandas as pd
+
+# Base folder
+Base = 'C:/Users/Administrator/Downloads'
+
+# Input CSV from GitHub
+file_input = "https://media.githubusercontent.com/media/Apress/practical-data-science/refs/heads/master/VKHCG/01-Vermeulen/00-RawData/IP_DATA_ALL.csv"
+
+print("Loading:", file_input)
+data = pd.read_csv(file_input, encoding="latin-1", low_memory=False)
+
+# Create output folder
+output_dir = f'{Base}/Cleaned_IP_Data'
+os.makedirs(output_dir, exist_ok=True)
+
+print("Rows:", data.shape[0])
+print("Columns:", data.shape[1])
+
+# Clean column names
+data.columns = [col.strip().replace(" ", ".") for col in data.columns]
+
+# Add row index label
+data.index.name = "RowID"
+
+# Save cleaned file
+output_file = f'{output_dir}/Retrieve_IP_DATA.csv'
+data.to_csv(output_file, index=True, encoding="latin-1")
+
+print("Output File Saved At:", output_file)
+print("Done!")
